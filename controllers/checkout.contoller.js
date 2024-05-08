@@ -3,19 +3,20 @@ import mongoose from "mongoose";
 import checkout from "../models/checkout.js";
 
 export const ProductCheckout = async (req, res) => {
-    const { _productid } = req?.params;
-    const { amount, currency, payment_mode } = req?.body;
 
     try {
-        await checkout.create({
-            product_id: _productid,
-            checkout_id: `${moment().format("ddd").toLocaleUpperCase()}${Date.now()}${moment().format("MMM").toLocaleUpperCase()}`,
+        if (!Array.isArray(req?.body)) return res.status(400).send({ message: 'Faield to checkout, Checkout payload must be array.', error })
+        if (!req?.body?.length) return res.status(400).send({ message: 'Faield to checkout, Checkout payload cant be empaty.', error })
+        const products = req?.body?.map((value, index) => ({
+            product_id: value?.product_id,
+            amount: value?.amount,
+            payment_status: value?.payment_status,
+            payment_mode: value?.payment_mode,
+            checkout_id: `${moment().format("ddd").toLocaleUpperCase()}${Date.now()}${moment().format("MMM").toLocaleUpperCase()}_${index + 1}`,
             user_id: req?.userId,
-            amount: amount,
-            currency,
-            payment_mode,
-            payment_status
-        })
+        }))
+
+        await checkout.insertMany(products)
             .then(async (result) => {
                 return res.status(201).send({ message: "Successfully checkout" });
             })
