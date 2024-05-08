@@ -5,6 +5,7 @@ export const AddProduct = async (req, res) => {
     const { title, description, category, actual_price, sale_price, discount_price, discount_percent, isDiscount, authour, currency, publishedAt, manufacturedAt, publishedby, thumbnails } = req?.body;
 
     try {
+        
         await products.create({
             title,
             description,
