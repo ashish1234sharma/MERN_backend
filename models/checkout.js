@@ -14,7 +14,7 @@ const checkout = new mongoose.Schema({
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
         required: [true, "Please provide a user id"],
-        unique: true,
+        unique: false,
     },
     amount: { type: mongoose.Schema.Types.Number, default: 0, require: [true] },
     payment_mode: { type: mongoose.Schema.Types.String, default: null, require: [true], enum: ['card', 'cash', 'upi', 'online banking'] },
