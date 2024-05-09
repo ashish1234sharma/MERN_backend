@@ -4,7 +4,7 @@ const checkout = new mongoose.Schema({
     product_id: {
         type: mongoose.Schema.Types.ObjectId,
         required: [true, "Please provide a user id"],
-        unique: false,
+        unique: true,
     },
     checkout_id: {
         type: mongoose.Schema.Types.String,
